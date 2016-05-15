@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  h1 New Product
+  hr
+  .col-md-6
+    form.form-horizontal(action="/products" method="POST")
+      //- Title
+      .form-group(class=errors.title ? 'has-error' : '')
+        input.form-control#title(type="text" name="title" placeholder="Product Name")
+        if errors.title
+          .help-block= errors.title
+      //- Description
+      .form-group
+        textarea.form-control#description(name="description", placeholder="Product Description")
+      //- Price
+      .form-group(class=errors.price ? 'has-error' : '')
+        input.form-control#price(type="text" name="price" placeholder="0.00")
+        if errors.price
+          .help-block= errors.price
+      //- Submit
+      .form-group
+        label(for="submit")
+        input.btn.btn-primary(type="submit" value="Create Product")

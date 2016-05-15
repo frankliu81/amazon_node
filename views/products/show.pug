@@ -1,0 +1,12 @@
+extend ../layout
+
+block content
+  h1= product.title
+  p= product.description
+  p= product.price
+  form.form-hotizontal(action="/products/" + product.id + "/edit" method="GET")
+    .form-group
+      input.btn.btn-primary(type="submit" value="Edit Product")
+  form.form-horizontal(action="/products/" + product.id + "?_method=delete" method="POST")
+    .form-group
+      input.btn.btn-primary(type="submit" value="Delete Product")

@@ -1,0 +1,29 @@
+extend ../layout
+
+block content
+  h1 Edit Product
+  hr
+  .col-md-6
+    form.form-horizontal(action="/products/" + product.id + "?_method=patch" method="POST")
+      //- Title
+      .form-group(class=errors.title ? 'has-error' : '')
+        input.form-control#title(type="text" name="title" value=`${product.title}`)
+        if errors.title
+          .help-block= errors.title
+      //- Description
+      .form-group
+        textarea.form-control#description(name="description")
+          = `${product.description}`
+      //- Price
+      .form-group(class=errors.price ? 'has-error' : '')
+        input.form-control#price(type="text" name="price" value=`${product.price}`)
+        if errors.price
+          .help-block= errors.price
+      //- Submit
+      .form-group(class=errors.price ? 'has-error' : '')
+        label(for="submit")
+          input.btn.btn-primary(type="submit" value="Save Product")
+
+      form.form-horizontal(action="/products/" + product.id + "?_method=delete" method="POST")
+        .form-group
+          input.btn.btn-primary(type="submit" value="Delete Product")
