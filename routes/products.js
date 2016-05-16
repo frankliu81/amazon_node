@@ -20,7 +20,7 @@ router.post("/", function(req,res){
       res.render("products/new", {errors: err.erros});
     } else {
       console.log(product);
-      res.redirect("/products/" + product._id);
+      res.redirect("/products/" + product.id);
     }
   });
 });
@@ -46,7 +46,36 @@ router.delete("/:id", function(req, res) {
       res.render("error", {message: "Product not found", error: {status: 404}});
     } else {
       console.log(product);
-      res.redirect("/");
+      res.redirect("/products");
+    }
+  });
+});
+
+// Update product
+router.patch('/:id', function(req, res) {
+  console.log("Patch request");
+  Product.findOneAndUpdate({_id: req.params.id}, {
+    title: req.body.title,
+    description: req.body.description,
+    // http://stackoverflow.com/questions/30445849/how-do-you-get-the-created-object-of-a-findoneandupdate-with-upsert-true-in-m
+    // new: true return the modified document rather than the original
+    price: req.body.price}, {new: true}, function(err, product) {
+      if(err) {
+        res.render("error", {message: "Product not found!", error: {status: 404}});
+      } else {
+        res.redirect("/products/" + product.id);
+      }
+  });
+});
+
+// Edit page
+router.get("/:id/edit", function(req, res) {
+  console.log("In edit page");
+  Product.findOne({_id: req.params.id}, function(err, product) {
+    if(err) {
+      res.render("error", {message: "Product not found", error: {status: 404}});
+    } else {
+      res.render("products/edit", {product: product, errors: []});
     }
   });
 });
@@ -62,35 +91,6 @@ router.get('/', function(req, res, next) {
       next(new Error('failed to load products'));
     }
   })
-});
-
-// Edit page
-router.get("/:id/edit", function(req, res) {
-  console.log("In edit page");
-  Product.findOne({_id: req.params.id}, function(err, product) {
-    if(err) {
-      res.render("error", {message: "Product not found", error: {status: 404}});
-    } else {
-      res.render("products/edit", {product: product, errors: []});
-    }
-  });
-});
-
-// Update product
-router.patch(':/id', function(req, res) {
-  console.log("Patch request");
-  Product.findOneAndUpdate({_id: req.params.id}, {
-    title: req.body.title,
-    description: req.body.description,
-    // http://stackoverflow.com/questions/30445849/how-do-you-get-the-created-object-of-a-findoneandupdate-with-upsert-true-in-m
-    // new: true return the modified document rather than the original
-    price: req.body.price}, {new: true}, function(err, product) {
-      if(err) {
-        res.render("error", {message: "Product not found!", error: {status: 404}});
-      } else {
-        res.redirect("/products/" + product._id);
-      }
-  });
 });
 
 module.exports = router;

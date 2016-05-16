@@ -4,10 +4,10 @@ block content
   ul
     h1 All Products
     hr
-      each product in Products
-        li
-          a(href='/products' + product.id) #{product.title}
-          p
-          p Description:  #{product.description}
-          p Price:        #{product.price}
-          hr
+    each product in products
+      li
+        a(href='/products/' + product.id) #{product.title}
+        p
+        p Description:  #{product.description}
+        p Price:        #{product.price}
+        hr
